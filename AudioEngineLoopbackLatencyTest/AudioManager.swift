@@ -266,7 +266,6 @@ extension AudioManager {
         recordedOutputNodePlayer.play()
         
         //play the original metronome audio at sample position 0 and try to sync everything else up to it
-        
         let originalAudioTime = AVAudioTime(sampleTime: 0, atRate: renderingEngine.mainMixerNode.outputFormat(forBus: 0).sampleRate)
         originalAudioPlayerNode.scheduleBuffer(metronomeFileBuffer, at: originalAudioTime, options: []) {
             print("Played original audio")
