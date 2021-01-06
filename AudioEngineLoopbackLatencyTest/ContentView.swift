@@ -48,7 +48,7 @@ struct ContentView: View {
             }
             
             if audioManager.floatDataToDisplay.0.count > 0 {
-                Text("Scale: 1pt = \(kSamplesPerPixel) samples")
+                Text("Scale: 1pt = \(kSamplesPerPixel) samples / Grid shows 1000 sample increments")
                 Text("Top graph: original audio / Bottom graph: recorded input audio")
             }
         }

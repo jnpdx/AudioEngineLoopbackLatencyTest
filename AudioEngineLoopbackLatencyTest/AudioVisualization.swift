@@ -15,18 +15,31 @@ struct AudioVisualization: View {
     
     var body: some View {
         GeometryReader { geometry in
+            
+            //draw a grid every 1000 samples
+            Path { path in
+                let gridColumnWidth = CGFloat(1000) / CGFloat(kSamplesPerPixel)
+                for gridColumnIndex in 0..<Int(geometry.size.width/gridColumnWidth) {
+                    path.move(to: CGPoint(x: CGFloat(gridColumnIndex) * gridColumnWidth, y: 0))
+                    path.addLine(to: CGPoint(x: CGFloat(gridColumnIndex) * gridColumnWidth, y: geometry.size.height))
+                }
+            }
+            .stroke(Color(red: 0.0, green: 0.0, blue: 0.0, opacity: 0.1))
+            
+            //the waveform
             Path { path in
                 let pointWidth = geometry.size.width / CGFloat(graphData.count)
                 let halfHeight = geometry.size.height / 2
                 for pointIndex in 0..<graphData.count {
                     let pointValue = graphData[pointIndex]
                     let xPos = CGFloat(pointIndex) * pointWidth
-                    let yLength = halfHeight * CGFloat(pointValue)
+                    let yLength = max(0.5,halfHeight * CGFloat(pointValue))
                     path.move(to: CGPoint(x: xPos,
                                           y: halfHeight - yLength))
                     path.addLine(to: CGPoint(x: xPos, y: halfHeight + yLength))
                 }
-            }.stroke()
+            }
+            .stroke()
         }
     }
 }
