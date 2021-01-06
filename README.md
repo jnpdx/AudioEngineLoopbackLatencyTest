@@ -11,6 +11,7 @@ Even on iOS, how do these properties get used correctly and reliably to sync aud
 - A pre-recorded metronome audio file is scheduled and played via an `AVAudioPlayerNode`
 - Audio input data is recorded via a tap on `AVAudioEngine`s `inputNode`
 - An output file is generated (and displayed visually on-screen) that attempts to sync the audio signals. Ideally, after syncing, the result file should play the original audio and the new input audio totally in sync.
+- `AudioEngineLoopbackLatencyTest` target can be run as a MacCatalyst or iOS app.  `AudioEngineLoopbackLatencyTest-MacNative` runs the same codebase, but as a native macOS app (eg no Catalyst wrapper).
 
 ## Sync strategy details
 - Using `sampleTime` is not a reliable timing strategy -- the input node and output node may report dramatically different timestamps.  However, theoretically, the `hostTime` property gives an accurate timestamp that can be compared across nodes.
