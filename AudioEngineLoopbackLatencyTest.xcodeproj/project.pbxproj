@@ -13,6 +13,19 @@
 		D25EF49225A6244C005A1A8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25EF49125A6244C005A1A8D /* Assets.xcassets */; };
 		D25EF49525A6244C005A1A8D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25EF49425A6244C005A1A8D /* Preview Assets.xcassets */; };
 		D25EF49825A6244C005A1A8D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25EF49625A6244C005A1A8D /* LaunchScreen.storyboard */; };
+		D25EF4A125A6246C005A1A8D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A025A6246C005A1A8D /* AudioManager.swift */; };
+		D25EF4A425A62482005A1A8D /* AudioVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A325A62482005A1A8D /* AudioVisualization.swift */; };
+		D25EF4A725A62498005A1A8D /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A625A62498005A1A8D /* UtilityFunctions.swift */; };
+		D25EF4B225A624E5005A1A8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4B125A624E5005A1A8D /* AppDelegate.swift */; };
+		D25EF4B625A624E7005A1A8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25EF4B525A624E7005A1A8D /* Assets.xcassets */; };
+		D25EF4B925A624E7005A1A8D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25EF4B825A624E7005A1A8D /* Preview Assets.xcassets */; };
+		D25EF4BC25A624E7005A1A8D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25EF4BA25A624E7005A1A8D /* Main.storyboard */; };
+		D25EF4C425A624FC005A1A8D /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A625A62498005A1A8D /* UtilityFunctions.swift */; };
+		D25EF4C525A624FC005A1A8D /* AudioVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A325A62482005A1A8D /* AudioVisualization.swift */; };
+		D25EF4C625A624FC005A1A8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF48F25A6244A005A1A8D /* ContentView.swift */; };
+		D25EF4C725A624FC005A1A8D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25EF4A025A6246C005A1A8D /* AudioManager.swift */; };
+		D25EF4CB25A6251A005A1A8D /* OriginalAudio.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D25EF4CA25A6251A005A1A8D /* OriginalAudio.m4a */; };
+		D25EF4CC25A6251A005A1A8D /* OriginalAudio.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D25EF4CA25A6251A005A1A8D /* OriginalAudio.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,10 +37,29 @@
 		D25EF49425A6244C005A1A8D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D25EF49725A6244C005A1A8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D25EF49925A6244C005A1A8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D25EF4A025A6246C005A1A8D /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		D25EF4A325A62482005A1A8D /* AudioVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVisualization.swift; sourceTree = "<group>"; };
+		D25EF4A625A62498005A1A8D /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
+		D25EF4A925A624A3005A1A8D /* AudioEngineLoopbackLatencyTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioEngineLoopbackLatencyTest.entitlements; sourceTree = "<group>"; };
+		D25EF4AF25A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AudioEngineLoopbackLatencyTest-MacNative.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D25EF4B125A624E5005A1A8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D25EF4B525A624E7005A1A8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D25EF4B825A624E7005A1A8D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D25EF4BB25A624E7005A1A8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D25EF4BD25A624E7005A1A8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D25EF4BE25A624E7005A1A8D /* AudioEngineLoopbackLatencyTest_MacNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioEngineLoopbackLatencyTest_MacNative.entitlements; sourceTree = "<group>"; };
+		D25EF4CA25A6251A005A1A8D /* OriginalAudio.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = OriginalAudio.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D25EF48525A6244A005A1A8D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D25EF4AC25A624E5005A1A8D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,7 +72,9 @@
 		D25EF47F25A6244A005A1A8D = {
 			isa = PBXGroup;
 			children = (
+				D25EF4CA25A6251A005A1A8D /* OriginalAudio.m4a */,
 				D25EF48A25A6244A005A1A8D /* AudioEngineLoopbackLatencyTest */,
+				D25EF4B025A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative */,
 				D25EF48925A6244A005A1A8D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				D25EF48825A6244A005A1A8D /* AudioEngineLoopbackLatencyTest.app */,
+				D25EF4AF25A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,9 +91,13 @@
 		D25EF48A25A6244A005A1A8D /* AudioEngineLoopbackLatencyTest */ = {
 			isa = PBXGroup;
 			children = (
+				D25EF4A925A624A3005A1A8D /* AudioEngineLoopbackLatencyTest.entitlements */,
 				D25EF48B25A6244A005A1A8D /* AppDelegate.swift */,
 				D25EF48D25A6244A005A1A8D /* SceneDelegate.swift */,
 				D25EF48F25A6244A005A1A8D /* ContentView.swift */,
+				D25EF4A025A6246C005A1A8D /* AudioManager.swift */,
+				D25EF4A325A62482005A1A8D /* AudioVisualization.swift */,
+				D25EF4A625A62498005A1A8D /* UtilityFunctions.swift */,
 				D25EF49125A6244C005A1A8D /* Assets.xcassets */,
 				D25EF49625A6244C005A1A8D /* LaunchScreen.storyboard */,
 				D25EF49925A6244C005A1A8D /* Info.plist */,
@@ -71,6 +110,27 @@
 			isa = PBXGroup;
 			children = (
 				D25EF49425A6244C005A1A8D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D25EF4B025A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative */ = {
+			isa = PBXGroup;
+			children = (
+				D25EF4B125A624E5005A1A8D /* AppDelegate.swift */,
+				D25EF4B525A624E7005A1A8D /* Assets.xcassets */,
+				D25EF4BA25A624E7005A1A8D /* Main.storyboard */,
+				D25EF4BD25A624E7005A1A8D /* Info.plist */,
+				D25EF4BE25A624E7005A1A8D /* AudioEngineLoopbackLatencyTest_MacNative.entitlements */,
+				D25EF4B725A624E7005A1A8D /* Preview Content */,
+			);
+			path = "AudioEngineLoopbackLatencyTest-MacNative";
+			sourceTree = "<group>";
+		};
+		D25EF4B725A624E7005A1A8D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D25EF4B825A624E7005A1A8D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -95,6 +155,23 @@
 			productReference = D25EF48825A6244A005A1A8D /* AudioEngineLoopbackLatencyTest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D25EF4AE25A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D25EF4BF25A624E7005A1A8D /* Build configuration list for PBXNativeTarget "AudioEngineLoopbackLatencyTest-MacNative" */;
+			buildPhases = (
+				D25EF4AB25A624E5005A1A8D /* Sources */,
+				D25EF4AC25A624E5005A1A8D /* Frameworks */,
+				D25EF4AD25A624E5005A1A8D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AudioEngineLoopbackLatencyTest-MacNative";
+			productName = "AudioEngineLoopbackLatencyTest-MacNative";
+			productReference = D25EF4AF25A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -105,6 +182,9 @@
 				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					D25EF48725A6244A005A1A8D = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					D25EF4AE25A624E5005A1A8D = {
 						CreatedOnToolsVersion = 12.3;
 					};
 				};
@@ -123,6 +203,7 @@
 			projectRoot = "";
 			targets = (
 				D25EF48725A6244A005A1A8D /* AudioEngineLoopbackLatencyTest */,
+				D25EF4AE25A624E5005A1A8D /* AudioEngineLoopbackLatencyTest-MacNative */,
 			);
 		};
 /* End PBXProject section */
@@ -132,9 +213,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D25EF4CB25A6251A005A1A8D /* OriginalAudio.m4a in Resources */,
 				D25EF49825A6244C005A1A8D /* LaunchScreen.storyboard in Resources */,
 				D25EF49525A6244C005A1A8D /* Preview Assets.xcassets in Resources */,
 				D25EF49225A6244C005A1A8D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D25EF4AD25A624E5005A1A8D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D25EF4CC25A6251A005A1A8D /* OriginalAudio.m4a in Resources */,
+				D25EF4BC25A624E7005A1A8D /* Main.storyboard in Resources */,
+				D25EF4B925A624E7005A1A8D /* Preview Assets.xcassets in Resources */,
+				D25EF4B625A624E7005A1A8D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,9 +238,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D25EF4A725A62498005A1A8D /* UtilityFunctions.swift in Sources */,
 				D25EF48C25A6244A005A1A8D /* AppDelegate.swift in Sources */,
 				D25EF48E25A6244A005A1A8D /* SceneDelegate.swift in Sources */,
+				D25EF4A125A6246C005A1A8D /* AudioManager.swift in Sources */,
 				D25EF49025A6244A005A1A8D /* ContentView.swift in Sources */,
+				D25EF4A425A62482005A1A8D /* AudioVisualization.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D25EF4AB25A624E5005A1A8D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D25EF4C525A624FC005A1A8D /* AudioVisualization.swift in Sources */,
+				D25EF4C425A624FC005A1A8D /* UtilityFunctions.swift in Sources */,
+				D25EF4C625A624FC005A1A8D /* ContentView.swift in Sources */,
+				D25EF4C725A624FC005A1A8D /* AudioManager.swift in Sources */,
+				D25EF4B225A624E5005A1A8D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +268,14 @@
 				D25EF49725A6244C005A1A8D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		D25EF4BA25A624E7005A1A8D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D25EF4BB25A624E7005A1A8D /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -286,17 +402,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AudioEngineLoopbackLatencyTest/AudioEngineLoopbackLatencyTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioEngineLoopbackLatencyTest/Preview Content\"";
 				DEVELOPMENT_TEAM = PU59A74F57;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AudioEngineLoopbackLatencyTest/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnnastos.AudioEngineLoopbackLatencyTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -307,19 +426,72 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AudioEngineLoopbackLatencyTest/AudioEngineLoopbackLatencyTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioEngineLoopbackLatencyTest/Preview Content\"";
 				DEVELOPMENT_TEAM = PU59A74F57;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AudioEngineLoopbackLatencyTest/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnnastos.AudioEngineLoopbackLatencyTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D25EF4C025A624E7005A1A8D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "AudioEngineLoopbackLatencyTest-MacNative/AudioEngineLoopbackLatencyTest_MacNative.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"AudioEngineLoopbackLatencyTest-MacNative/Preview Content\"";
+				DEVELOPMENT_TEAM = PU59A74F57;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "AudioEngineLoopbackLatencyTest-MacNative/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.johnnastos.AudioEngineLoopbackLatencyTest-MacNative";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D25EF4C125A624E7005A1A8D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "AudioEngineLoopbackLatencyTest-MacNative/AudioEngineLoopbackLatencyTest_MacNative.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"AudioEngineLoopbackLatencyTest-MacNative/Preview Content\"";
+				DEVELOPMENT_TEAM = PU59A74F57;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "AudioEngineLoopbackLatencyTest-MacNative/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.johnnastos.AudioEngineLoopbackLatencyTest-MacNative";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -340,6 +512,15 @@
 			buildConfigurations = (
 				D25EF49D25A6244C005A1A8D /* Debug */,
 				D25EF49E25A6244C005A1A8D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D25EF4BF25A624E7005A1A8D /* Build configuration list for PBXNativeTarget "AudioEngineLoopbackLatencyTest-MacNative" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D25EF4C025A624E7005A1A8D /* Debug */,
+				D25EF4C125A624E7005A1A8D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
