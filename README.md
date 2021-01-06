@@ -2,7 +2,7 @@
 
 This project demonstrates an attempt to reconcile audio input/output timestamps on macOS/iOS/macCatalyst by doing a loopback experiment.  
 
-The desired result is an algorithm that is able accurately sync an input recording with an original audio source after the fact.  In practice, it ends up between 500 and 1500 samples off, depending on machine.
+The desired result is an algorithm that is able accurately sync an input recording with an original audio source after the fact.  In practice, it ends up between 500 and 1500 samples off, depending on machine (*On my mac, it's about 720 samples off*).
 
 **I would expect that I'd have to compensate for input/output latency somewhere, but I haven't figured out a reliable way to do this across platforms**.  For example, `AVAudioSession`'s latency properties (eg. `inputLatency`, `outputLatency`, and `ioBufferDuration`) are only available on iOS. How would these be calculated on macOS?
 Even on iOS, how do these properties get used correctly and reliably to sync audio?
