@@ -8,7 +8,7 @@
 import SwiftUI
 import Accelerate
 
-let kSamplesPerPixel : UInt32 = 40
+let kSamplesPerPixel : UInt32 = 20
 
 struct AudioVisualization: View {
     var graphData: [Float]
