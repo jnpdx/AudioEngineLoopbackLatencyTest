@@ -13,6 +13,12 @@ let kSamplesPerPixel : UInt32 = 20
 struct AudioVisualization: View {
     var graphData: [Float]
     
+    @Environment(\.colorScheme) var colorScheme
+    
+    var gridColor : Color {
+        colorScheme == .dark ? Color.white.opacity(0.3) : Color.black.opacity(0.2)
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             
@@ -24,7 +30,7 @@ struct AudioVisualization: View {
                     path.addLine(to: CGPoint(x: CGFloat(gridColumnIndex) * gridColumnWidth, y: geometry.size.height))
                 }
             }
-            .stroke(Color(red: 0.0, green: 0.0, blue: 0.0, opacity: 0.1))
+            .stroke(gridColor)
             
             //the waveform
             Path { path in

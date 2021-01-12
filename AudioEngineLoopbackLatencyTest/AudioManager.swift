@@ -18,6 +18,9 @@ struct AudioManagerState {
     var audioBuffersScheduledAtHost : UInt64 = 0 //when does the original audio get played
     var inputNodeTapBeganAtHost : UInt64 = 0 //the first call to the input node tap
     var outputNodeTapBeganAtHost : UInt64 = 0 //first call to the output node tap
+    
+    var outputLatency : UInt64 = 0
+    var inputLatency : UInt64 = 0
 }
 
 class AudioManager : ObservableObject {
@@ -136,6 +139,7 @@ extension AudioManager {
             fatalError("Error: \(status)")
         }
         print("kAudioDevicePropertyLatency (output - output scope): \(answer)")
+        let outputLatency = answer
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
                                             mScope: kAudioObjectPropertyScopeInput,
@@ -159,6 +163,7 @@ extension AudioManager {
             fatalError("Error: \(status)")
         }
         print("kAudioDevicePropertyLatency (input -- input scope): \(answer)")
+        let inputLatency = answer
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
                                             mScope: kAudioObjectPropertyScopeOutput,
@@ -181,6 +186,7 @@ extension AudioManager {
             fatalError("Error: \(status)")
         }
         print("kAudioDevicePropertySafetyOffset (output -- output scope): \(answer)")
+        let outputSafety = answer
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
                                             mScope: kAudioObjectPropertyScopeInput,
@@ -203,6 +209,7 @@ extension AudioManager {
             fatalError("Error: \(status)")
         }
         print("kAudioDevicePropertySafetyOffset (input -- input scope): \(answer)")
+        let inputSafety = answer
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
                                             mScope: kAudioObjectPropertyScopeOutput,
@@ -224,7 +231,7 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
-        print("kAudioDevicePropertyBufferSize (input -- input scope): \(answer) *bytes*")
+        print("kAudioDevicePropertyBufferSize (output -- output scope): \(answer) *bytes*")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferSize,
                                             mScope: kAudioObjectPropertyScopeInput,
@@ -261,6 +268,7 @@ extension AudioManager {
             fatalError("Status: \(status)")
         }
         print("Stream latency (output): \(streamLatency)")
+        let outputStreamLatency = streamLatency
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyStreams, mScope: kAudioObjectPropertyScopeInput, mElement: kAudioObjectPropertyElementMaster)
         status = AudioObjectGetPropertyDataSize(outputNodeID, &pa, 0, nil, &numStreams)
@@ -282,7 +290,110 @@ extension AudioManager {
         guard  status == noErr else {
             fatalError("Status: \(status)")
         }
-        print("Stream latency (output): \(streamLatency)")
+        print("Stream latency (input): \(streamLatency)")
+        let inputStreamLatency = streamLatency
+        
+        //jn's mac : need to get to about ~720 samples
+        //mn's mac : need to get to about ~1200 samples
+        /*
+         
+         JN numbers:
+         
+         kAudioDevicePropertyLatency (output - output scope): 399
+         kAudioDevicePropertyLatency (output - input scope): 0
+         kAudioDevicePropertyLatency (input -- input scope): 0
+         kAudioDevicePropertyLatency (input -- output scope): 399
+         kAudioDevicePropertySafetyOffset (output -- output scope): 93
+         kAudioDevicePropertySafetyOffset (output -- input scope): 66
+         kAudioDevicePropertySafetyOffset (input -- input scope): 66
+         kAudioDevicePropertySafetyOffset (input -- output scope): 93
+         kAudioDevicePropertyBufferSize (output -- output scope): 4096 *bytes*
+         kAudioDevicePropertyBufferSize (input -- input scope): 4096 *bytes*
+         Streams:
+         [67, 0, 0, 0]
+         Stream latency (output): 0
+         Streams:
+         [68, 0, 0, 0]
+         Stream latency (output): 0
+         
+         */
+        
+        /*
+         
+         Input frame offset in samples: -14629.798077300002
+         Output frame offset in samples: -13446.7981137
+         
+         Zeroed out:
+         
+         Input: -1183
+         Output: 0
+         
+         */
+        
+        /*
+         
+         JN formulae:
+         outputLatency * 2 (800) - inputSafety (66) = 734
+         
+         */
+        
+        /*
+         
+         MN numbers:
+         
+         kAudioDevicePropertyLatency (output - output scope): 34
+         kAudioDevicePropertyLatency (output - input scope): 0
+         kAudioDevicePropertyLatency (input -- input scope): 0
+         kAudioDevicePropertyLatency (input -- output scope): 34
+         kAudioDevicePropertySafetyOffset (output -- output scope): 117
+         kAudioDevicePropertySafetyOffset (output -- input scope): 150
+         kAudioDevicePropertySafetyOffset (input -- input scope): 150
+         kAudioDevicePropertySafetyOffset (input -- output scope): 117
+         kAudioDevicePropertyBufferSize (input -- input scope): 4096 *bytes*
+         kAudioDevicePropertyBufferSize (input -- input scope): 2048 *bytes*
+         Streams:
+         [88, 0, 0, 0]
+         Stream latency (output): 933
+         Streams:
+         [89, 0, 0, 0]
+         Stream latency (output): 1444
+         
+         */
+        
+        //mn's mac : need to get to about ~1200 samples
+        /*
+         
+         Input frame offset in samples: -5221.879412400001
+         Output frame offset in samples: -3930.8793867
+         
+         Zeroed out:
+         
+         Input: -1291
+         Output: 0
+         
+         This means the input buffer *reports* starting that many samples earlier than the output buffer
+         
+         
+         1084 (output added up)
+         1594 (input added up)
+         
+         */
+        
+        /*
+         
+         MN formulae:
+         outputLatency * 2 (68) - inputSafety (150) =  -18 + outputStreamLatency (1444) = 1426
+         
+         */
+        
+        //TODO: Dynamic sample size!
+        let inputLatencyInFramesTotal = Double(inputLatency + inputStreamLatency + inputSafety)
+        state.inputLatency = UInt64(inputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
+        print("Input latency: \(state.inputLatency) frames: \(inputLatencyInFramesTotal)")
+        let outputLatencyInFramesTotal = Double(outputLatency + outputStreamLatency + outputSafety)
+        state.outputLatency = UInt64(outputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
+        print("Output latency: \(state.outputLatency) frames: \(outputLatencyInFramesTotal)")
+        
         #endif
     }
 }
@@ -440,9 +551,9 @@ extension AudioManager {
         
         //play the original metronome audio at sample position 0 and try to sync everything else up to it
         let originalAudioTime = AVAudioTime(sampleTime: 0, atRate: renderingEngine.mainMixerNode.outputFormat(forBus: 0).sampleRate)
-        originalAudioPlayerNode.scheduleBuffer(metronomeFileBuffer, at: originalAudioTime, options: []) {
-            print("Played original audio")
-        }
+//        originalAudioPlayerNode.scheduleBuffer(metronomeFileBuffer, at: originalAudioTime, options: []) {
+//            print("Played original audio")
+//        }
         
         //play the tap of the output node at its determined sync time -- note that this seems to line up in the result file
         let outputAudioTime = AVAudioTime(sampleTime: AVAudioFramePosition(outputNodeDiffInSamples),
@@ -520,7 +631,7 @@ extension AudioManager {
         let recordingFormat = audioEngine.inputNode.inputFormat(forBus: 0)
         audioEngine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (pcmBuffer, timestamp) in
             if self.state.inputNodeTapBeganAtHost == 0 {
-                self.state.inputNodeTapBeganAtHost = timestamp.hostTime
+                self.state.inputNodeTapBeganAtHost = timestamp.hostTime - self.state.inputLatency
                 print("Input node presentation latency: \(self.audioEngine.inputNode.presentationLatency) samples: \(self.audioEngine.inputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.inputNode.latency)")
             }
             
@@ -537,8 +648,8 @@ extension AudioManager {
         let recordingFormat = audioEngine.mainMixerNode.outputFormat(forBus: 0)
         audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (pcmBuffer, timestamp) in
             if self.state.outputNodeTapBeganAtHost == 0 {
-                self.state.outputNodeTapBeganAtHost = timestamp.hostTime
-                print("Output node presentation latency: \(self.audioEngine.outputNode.presentationLatency) samples: \(self.audioEngine.outputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.outputNode.latency)")
+                self.state.outputNodeTapBeganAtHost = timestamp.hostTime + self.state.outputLatency
+                print("Output node presentation latency: \(self.audioEngine.outputNode.presentationLatency) samples: \(self.audioEngine.outputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.outputNode.latency) \(self.state.outputLatency)")
                 
                 print("Mixer node latency: \(self.audioEngine.mainMixerNode.outputPresentationLatency * recordingFormat.sampleRate) \(self.audioEngine.mainMixerNode.latency)")
                 
