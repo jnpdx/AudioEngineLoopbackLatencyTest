@@ -141,16 +141,16 @@ extension AudioManager {
         print("kAudioDevicePropertyLatency (output - output scope): \(answer)")
         let outputLatency = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
-                                            mScope: kAudioObjectPropertyScopeInput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertyLatency (output - input scope): \(answer)")
+//        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
+//                                            mScope: kAudioObjectPropertyScopeInput,
+//                                            mElement: kAudioObjectPropertyElementMaster)
+//        answerSize = UInt32(MemoryLayout<UInt32>.size)
+//        answer = 0
+//        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
+//        if status != noErr {
+//            fatalError("Error: \(status)")
+//        }
+//        print("kAudioDevicePropertyLatency (output - input scope): \(answer)")
         
         let inputNodeID = audioEngine.inputNode.auAudioUnit.deviceID
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
@@ -165,16 +165,16 @@ extension AudioManager {
         print("kAudioDevicePropertyLatency (input -- input scope): \(answer)")
         let inputLatency = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
-                                            mScope: kAudioObjectPropertyScopeOutput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertyLatency (input -- output scope): \(answer)")
+//        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
+//                                            mScope: kAudioObjectPropertyScopeOutput,
+//                                            mElement: kAudioObjectPropertyElementMaster)
+//        answerSize = UInt32(MemoryLayout<UInt32>.size)
+//        answer = 0
+//        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
+//        if status != noErr {
+//            fatalError("Error: \(status)")
+//        }
+//        print("kAudioDevicePropertyLatency (input -- output scope): \(answer)")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
                                             mScope: kAudioObjectPropertyScopeOutput,
@@ -188,16 +188,16 @@ extension AudioManager {
         print("kAudioDevicePropertySafetyOffset (output -- output scope): \(answer)")
         let outputSafety = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
-                                            mScope: kAudioObjectPropertyScopeInput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertySafetyOffset (output -- input scope): \(answer)")
+//        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
+//                                            mScope: kAudioObjectPropertyScopeInput,
+//                                            mElement: kAudioObjectPropertyElementMaster)
+//        answerSize = UInt32(MemoryLayout<UInt32>.size)
+//        answer = 0
+//        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
+//        if status != noErr {
+//            fatalError("Error: \(status)")
+//        }
+//        print("kAudioDevicePropertySafetyOffset (output -- input scope): \(answer)")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
                                             mScope: kAudioObjectPropertyScopeInput,
@@ -211,16 +211,16 @@ extension AudioManager {
         print("kAudioDevicePropertySafetyOffset (input -- input scope): \(answer)")
         let inputSafety = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
-                                            mScope: kAudioObjectPropertyScopeOutput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertySafetyOffset (input -- output scope): \(answer)")
+//        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
+//                                            mScope: kAudioObjectPropertyScopeOutput,
+//                                            mElement: kAudioObjectPropertyElementMaster)
+//        answerSize = UInt32(MemoryLayout<UInt32>.size)
+//        answer = 0
+//        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
+//        if status != noErr {
+//            fatalError("Error: \(status)")
+//        }
+//        print("kAudioDevicePropertySafetyOffset (input -- output scope): \(answer)")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferSize,
                                             mScope: kAudioObjectPropertyScopeOutput,
@@ -386,11 +386,11 @@ extension AudioManager {
          
          */
         
-        //TODO: Dynamic sample size!
-        let inputLatencyInFramesTotal = Double(inputLatency + inputStreamLatency + inputSafety)
+        //TODO: Dynamic sample rate!
+        let inputLatencyInFramesTotal = Double(inputLatency  + inputSafety)
         state.inputLatency = UInt64(inputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
         print("Input latency: \(state.inputLatency) frames: \(inputLatencyInFramesTotal)")
-        let outputLatencyInFramesTotal = Double(outputLatency + outputStreamLatency + outputSafety)
+        let outputLatencyInFramesTotal = Double(outputLatency  + outputSafety)
         state.outputLatency = UInt64(outputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
         print("Output latency: \(state.outputLatency) frames: \(outputLatencyInFramesTotal)")
         
