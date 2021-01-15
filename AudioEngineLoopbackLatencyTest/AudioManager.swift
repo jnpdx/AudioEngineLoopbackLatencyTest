@@ -19,8 +19,8 @@ struct AudioManagerState {
     var inputNodeTapBeganAtHost : UInt64 = 0 //the first call to the input node tap
     var outputNodeTapBeganAtHost : UInt64 = 0 //first call to the output node tap
     
-    var outputLatency : UInt64 = 0
-    var inputLatency : UInt64 = 0
+    var calculatedOutputLatency : UInt64 = 0
+    var calculatedInputLatency : UInt64 = 0
 }
 
 class AudioManager : ObservableObject {
@@ -53,7 +53,7 @@ extension AudioManager {
         self.isRunning = true
         do {
             try audioEngine.start()
-            print("Audio engine running")
+            print("Audio engine running ***************************************")
         } catch {
             fatalError("Couldn't start engine: \(error)")
         }
@@ -65,7 +65,7 @@ extension AudioManager {
         DispatchQueue.main.async {
             self.audioEngine.stop()
             self.isRunning = false
-            print("Audio engine stopped")
+            print("Audio engine stopped ***************************************")
             self.createResultFile()
         }
     }
@@ -141,17 +141,6 @@ extension AudioManager {
         print("kAudioDevicePropertyLatency (output - output scope): \(answer)")
         let outputLatency = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
-                                            mScope: kAudioObjectPropertyScopeInput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertyLatency (output - input scope): \(answer)")
-        
         let inputNodeID = audioEngine.inputNode.auAudioUnit.deviceID
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
                                             mScope: kAudioObjectPropertyScopeInput,
@@ -164,17 +153,6 @@ extension AudioManager {
         }
         print("kAudioDevicePropertyLatency (input -- input scope): \(answer)")
         let inputLatency = answer
-        
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyLatency,
-                                            mScope: kAudioObjectPropertyScopeOutput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertyLatency (input -- output scope): \(answer)")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
                                             mScope: kAudioObjectPropertyScopeOutput,
@@ -193,17 +171,6 @@ extension AudioManager {
                                             mElement: kAudioObjectPropertyElementMaster)
         answerSize = UInt32(MemoryLayout<UInt32>.size)
         answer = 0
-        status = AudioObjectGetPropertyData(outputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertySafetyOffset (output -- input scope): \(answer)")
-        
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
-                                            mScope: kAudioObjectPropertyScopeInput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
         status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
         if status != noErr {
             fatalError("Error: \(status)")
@@ -211,18 +178,7 @@ extension AudioManager {
         print("kAudioDevicePropertySafetyOffset (input -- input scope): \(answer)")
         let inputSafety = answer
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertySafetyOffset,
-                                            mScope: kAudioObjectPropertyScopeOutput,
-                                            mElement: kAudioObjectPropertyElementMaster)
-        answerSize = UInt32(MemoryLayout<UInt32>.size)
-        answer = 0
-        status = AudioObjectGetPropertyData(inputNodeID, &pa, 0, nil, &answerSize, &answer)
-        if status != noErr {
-            fatalError("Error: \(status)")
-        }
-        print("kAudioDevicePropertySafetyOffset (input -- output scope): \(answer)")
-        
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferSize,
+        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferFrameSize,
                                             mScope: kAudioObjectPropertyScopeOutput,
                                             mElement: kAudioObjectPropertyElementMaster)
         answerSize = UInt32(MemoryLayout<UInt32>.size)
@@ -231,9 +187,10 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
-        print("kAudioDevicePropertyBufferSize (output -- output scope): \(answer) *bytes*")
+        let outputBufferFrameSize = answer
+        print("kAudioDevicePropertyBufferFrameSize (output -- output scope): \(answer)")
         
-        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferSize,
+        pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferFrameSize,
                                             mScope: kAudioObjectPropertyScopeInput,
                                             mElement: kAudioObjectPropertyElementMaster)
         answerSize = UInt32(MemoryLayout<UInt32>.size)
@@ -242,7 +199,7 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
-        print("kAudioDevicePropertyBufferSize (input -- input scope): \(answer) *bytes*")
+        print("kAudioDevicePropertyBufferFrameSize (input -- input scope): \(answer)")
         
         var streamLatency : UInt32 = 0
         var numStreams : UInt32 = 0
@@ -260,7 +217,10 @@ extension AudioManager {
         guard  status == noErr else {
             fatalError("Status: \(status)")
         }
-        pa.mSelector = kAudioDevicePropertyLatency
+        pa = AudioObjectPropertyAddress(mSelector: kAudioStreamPropertyLatency,
+                                        mScope: kAudioObjectPropertyScopeOutput,
+                                        mElement: kAudioObjectPropertyElementMaster)
+        pa.mSelector = kAudioStreamPropertyLatency
         answerSize = UInt32(MemoryLayout<UInt32>.size)
         answer = 0
         status = AudioObjectGetPropertyData(streams[0], &pa, 0, nil, &answerSize, &streamLatency)
@@ -283,7 +243,7 @@ extension AudioManager {
         guard  status == noErr else {
             fatalError("Status: \(status)")
         }
-        pa.mSelector = kAudioDevicePropertyLatency
+        pa.mSelector = kAudioStreamPropertyLatency
         answerSize = UInt32(MemoryLayout<UInt32>.size)
         answer = 0
         status = AudioObjectGetPropertyData(streams[0], &pa, 0, nil, &answerSize, &streamLatency)
@@ -386,13 +346,12 @@ extension AudioManager {
          
          */
         
-        //TODO: Dynamic sample size!
-        let inputLatencyInFramesTotal = Double(inputLatency + inputStreamLatency + inputSafety)
-        state.inputLatency = UInt64(inputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
-        print("Input latency: \(state.inputLatency) frames: \(inputLatencyInFramesTotal)")
-        let outputLatencyInFramesTotal = Double(outputLatency + outputStreamLatency + outputSafety)
-        state.outputLatency = UInt64(outputLatencyInFramesTotal / 44100.0 * state.secondsToTicks)
-        print("Output latency: \(state.outputLatency) frames: \(outputLatencyInFramesTotal)")
+        let inputLatencyInFramesTotal = Double(inputLatency + inputSafety)
+        state.calculatedInputLatency = UInt64(inputLatencyInFramesTotal / audioEngine.inputNode.inputFormat(forBus: 0).sampleRate * state.secondsToTicks)
+        print("Input latency: \(state.calculatedInputLatency) frames: \(inputLatencyInFramesTotal)")
+        let outputLatencyInFramesTotal = Double(outputLatency + outputStreamLatency + outputSafety + outputBufferFrameSize)
+        state.calculatedOutputLatency = UInt64(outputLatencyInFramesTotal / audioEngine.outputNode.outputFormat(forBus: 0).sampleRate * state.secondsToTicks)
+        print("Output latency: \(state.calculatedOutputLatency) frames: \(outputLatencyInFramesTotal)")
         
         #endif
     }
@@ -413,7 +372,9 @@ extension AudioManager {
         playerNode.play()
         playerNode.scheduleBuffer(metronomeFileBuffer, at: audioTime, options:[], completionHandler: {
             print("Played original buffer")
-            self.stop()
+            if self.audioEngine.isRunning {
+                self.stop()
+            }
         })
     }
 }
@@ -631,7 +592,7 @@ extension AudioManager {
         let recordingFormat = audioEngine.inputNode.inputFormat(forBus: 0)
         audioEngine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (pcmBuffer, timestamp) in
             if self.state.inputNodeTapBeganAtHost == 0 {
-                self.state.inputNodeTapBeganAtHost = timestamp.hostTime - self.state.inputLatency
+                self.state.inputNodeTapBeganAtHost = timestamp.hostTime - self.state.calculatedInputLatency
                 print("Input node presentation latency: \(self.audioEngine.inputNode.presentationLatency) samples: \(self.audioEngine.inputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.inputNode.latency)")
             }
             
@@ -648,8 +609,8 @@ extension AudioManager {
         let recordingFormat = audioEngine.mainMixerNode.outputFormat(forBus: 0)
         audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (pcmBuffer, timestamp) in
             if self.state.outputNodeTapBeganAtHost == 0 {
-                self.state.outputNodeTapBeganAtHost = timestamp.hostTime + self.state.outputLatency
-                print("Output node presentation latency: \(self.audioEngine.outputNode.presentationLatency) samples: \(self.audioEngine.outputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.outputNode.latency) \(self.state.outputLatency)")
+                self.state.outputNodeTapBeganAtHost = timestamp.hostTime + self.state.calculatedOutputLatency
+                print("Output node presentation latency: \(self.audioEngine.outputNode.presentationLatency) samples: \(self.audioEngine.outputNode.presentationLatency * recordingFormat.sampleRate) regular latency: \(self.audioEngine.outputNode.latency) \(self.state.calculatedOutputLatency)")
                 
                 print("Mixer node latency: \(self.audioEngine.mainMixerNode.outputPresentationLatency * recordingFormat.sampleRate) \(self.audioEngine.mainMixerNode.latency)")
                 

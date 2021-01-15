@@ -8,7 +8,7 @@
 import SwiftUI
 import Accelerate
 
-let kSamplesPerPixel : UInt32 = 20
+let kSamplesPerPixel : UInt32 = 10
 
 struct AudioVisualization: View {
     var graphData: [Float]
@@ -24,7 +24,7 @@ struct AudioVisualization: View {
             
             //draw a grid every 1000 samples
             Path { path in
-                let gridColumnWidth = CGFloat(1000) / CGFloat(kSamplesPerPixel)
+                let gridColumnWidth = CGFloat(100) / CGFloat(kSamplesPerPixel)
                 for gridColumnIndex in 0..<Int(geometry.size.width/gridColumnWidth) {
                     path.move(to: CGPoint(x: CGFloat(gridColumnIndex) * gridColumnWidth, y: 0))
                     path.addLine(to: CGPoint(x: CGFloat(gridColumnIndex) * gridColumnWidth, y: geometry.size.height))
