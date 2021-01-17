@@ -21,6 +21,11 @@ struct AudioManagerState {
     
     var calculatedOutputLatency : UInt64 = 0
     var calculatedInputLatency : UInt64 = 0
+    
+    var outputSafetyOffset: UInt32 = 0
+    var inputSafetyOffset: UInt32 = 0
+    var outputBufferSizeFrames: UInt32 = 0
+    var inputBufferSizeFrames: UInt32 = 0
 }
 
 class AudioManager : ObservableObject {
@@ -163,6 +168,7 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
+        state.outputSafetyOffset = answer
         print("kAudioDevicePropertySafetyOffset (output -- output scope): \(answer)")
         let outputSafety = answer
         
@@ -175,6 +181,7 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
+        state.inputSafetyOffset = answer
         print("kAudioDevicePropertySafetyOffset (input -- input scope): \(answer)")
         let inputSafety = answer
         
@@ -188,6 +195,7 @@ extension AudioManager {
             fatalError("Error: \(status)")
         }
         let outputBufferFrameSize = answer
+        state.outputBufferSizeFrames = answer
         print("kAudioDevicePropertyBufferFrameSize (output -- output scope): \(answer)")
         
         pa = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyBufferFrameSize,
@@ -199,6 +207,7 @@ extension AudioManager {
         if status != noErr {
             fatalError("Error: \(status)")
         }
+        state.inputBufferSizeFrames = answer
         print("kAudioDevicePropertyBufferFrameSize (input -- input scope): \(answer)")
         
         var streamLatency : UInt32 = 0
@@ -516,16 +525,22 @@ extension AudioManager {
 //            print("Played original audio")
 //        }
         
+        let delay = 0.33
+        
         //play the tap of the output node at its determined sync time -- note that this seems to line up in the result file
-        let outputAudioTime = AVAudioTime(sampleTime: AVAudioFramePosition(outputNodeDiffInSamples),
-                                          atRate: renderingEngine.mainMixerNode.outputFormat(forBus: 0).sampleRate)
+        let outputAudioTime = AVAudioTime(sampleTime: AVAudioFramePosition(recordedOutputNodePlayer.outputFormat(forBus: 0).sampleRate * -delay) + Int64(state.inputBufferSizeFrames + state.outputBufferSizeFrames + state.outputSafetyOffset),
+                                          atRate: recordedOutputNodePlayer.outputFormat(forBus: 0).sampleRate)
+
+
         recordedOutputNodePlayer.scheduleBuffer(outputFileBuffer, at: outputAudioTime, options: []) {
             print("Output buffer played")
         }
         
         //play the tap of the input node at its determined sync time -- this _does not_ appear to line up in the result file
-        let inputAudioTime = AVAudioTime(sampleTime: AVAudioFramePosition(inputNodeDiffInSamples),
-                                         atRate: renderingEngine.mainMixerNode.outputFormat(forBus: 0).sampleRate)
+        let inputAudioTime = AVAudioTime(sampleTime: AVAudioFramePosition(recordedInputNodePlayer.outputFormat(forBus: 0).sampleRate * -delay) - Int64(state.inputSafetyOffset),
+                                         atRate: recordedInputNodePlayer.outputFormat(forBus: 0).sampleRate)
+
+
         recordedInputNodePlayer.scheduleBuffer(inputFileBuffer, at: inputAudioTime, options: []) {
             print("Input buffer played")
         }
